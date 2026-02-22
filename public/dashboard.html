@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Dashboard</title>
+
+<style>
+  body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f2f2f2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+  }
+
+  .box{
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    width:360px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  }
+
+  button{
+    margin-top:20px;
+    padding:10px;
+    width:100%;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background:#dc3545;
+    color:white;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Dashboard 🔐</h2>
+  <p id="msg">Checking authentication...</p>
+
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+async function checkAuth(){
+  const token = localStorage.getItem("token");
+
+  if(!token){
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const res = await fetch("/dashboard",{
+    headers:{
+      "Authorization":"Bearer " + token
+    }
+  });
+
+  const data = await res.json();
+
+  if(res.status === 401 || res.status === 403){
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+  }else{
+    document.getElementById("msg").innerText =
+      "Welcome " + data.user.email;
+  }
+}
+
+function logout(){
+  localStorage.removeItem("token");
+  window.location.href = "/login.html";
+}
+
+checkAuth();
+</script>
+
+</body>
+</html>

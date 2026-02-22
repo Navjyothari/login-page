@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register</title>
+  <style>
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#f2f2f2;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .box{
+      background:white;
+      padding:40px;
+      border-radius:10px;
+      width:320px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    }
+    input,button{
+      width:100%;
+      padding:10px;
+      margin-bottom:12px;
+      border-radius:6px;
+      border:1px solid #ccc;
+    }
+    button{
+      background:#28a745;
+      color:white;
+      border:none;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Register</h2>
+
+  <input id="email" type="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Password" />
+
+  <button onclick="register()">Register</button>
+
+  <p id="msg"></p>
+</div>
+
+<script>
+async function register(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch("http://localhost:3000/register",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body: JSON.stringify({email,password})
+  });
+
+  const data = await res.json();
+
+  document.getElementById("msg").innerText =
+    data.message || data.error;
+}
+</script>
+
+</body>
+</html>
