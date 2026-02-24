@@ -15,7 +15,7 @@ const JWT_SECRET = "mysecret_key";
 const db= mysql.createConnection({
   host:"localhost",
   user:"root",
-  password:"Navysql@1234",
+  password:"pass",
   database:"LOGINPAGE"
 });
 
